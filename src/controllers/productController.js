@@ -39,7 +39,16 @@ const findById = async (req, res, next) => {
 
 const updateById = async (req, res, next) => {
   try {
-    const product = await productService.updateById(req.params.id, req.body);
+    const data = { ...req.body };
+    if (req.file) {
+      const existing = await productService.findById(req.params.id);
+      if (existing.image) {
+        const oldPath = path.join(__dirname, '../../', existing.image);
+        fs.unlink(oldPath, () => {});
+      }
+      data.image = `/uploads/${req.file.filename}`;
+    }
+    const product = await productService.updateById(req.params.id, data);
     res.json(productResponseDto(product));
   } catch (err) {
     next(err);
