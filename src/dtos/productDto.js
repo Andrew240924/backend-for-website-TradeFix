@@ -17,8 +17,6 @@ const productResponseDto = (product) => ({
   price: product.price,
   category: product.category,
   image: product.image ?? null,
-  createdAt: product.createdAt,
-  updatedAt: product.updatedAt,
 });
 
 module.exports = {

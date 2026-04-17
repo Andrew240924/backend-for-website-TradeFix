@@ -15,8 +15,6 @@ const serviceResponseDto = (service) => ({
   description: service.description,
   category: service.category,
   price: service.price,
-  createdAt: service.createdAt,
-  updatedAt: service.updatedAt,
 });
 
 module.exports = {
