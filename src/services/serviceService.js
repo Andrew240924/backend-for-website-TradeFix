@@ -10,15 +10,15 @@ const create = async (data) => {
     throw new AppError('Name is required', 400);
   }
 
-  if (price <= 0) {
+  if (price == null || price <= 0) {
     throw new AppError('Price must be greater than 0', 400);
   }
 
   return await serviceRepository.create(data);
 };
 
-const findAll = async () => {
-  return await serviceRepository.findAll();
+const findAll = async (filters) => {
+  return await serviceRepository.findAll(filters);
 };
 
 const findById = async (id) => {
@@ -38,7 +38,7 @@ const updateById = async (id, data) => {
     throw new AppError('Service not found', 404);
   }
 
-  return;
+  return await serviceRepository.findById(id);
 };
 
 const deleteById = async (id) => {

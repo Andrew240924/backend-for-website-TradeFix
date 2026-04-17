@@ -3,7 +3,8 @@
 const jwt = require('jsonwebtoken');
 const AppError = require('../utils/AppError');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'secret';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) throw new Error('JWT_SECRET is not defined in environment variables');
 
 module.exports = (req, res, next) => {
   const authHeader = req.headers.authorization;

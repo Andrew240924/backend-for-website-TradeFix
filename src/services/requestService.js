@@ -1,6 +1,7 @@
 'use strict';
 
 const requestRepository = require('../repositories/requestRepository');
+const serviceRepository = require('../repositories/serviceRepository');
 const AppError = require('../utils/AppError');
 
 const create = async (data) => {
@@ -8,6 +9,12 @@ const create = async (data) => {
 
   if (!clientName || !clientContact || !serviceId || !description) {
     throw new AppError('Missing required fields', 400);
+  }
+
+  const service = await serviceRepository.findById(serviceId);
+
+  if (!service) {
+    throw new AppError(`Service with id ${serviceId} not found`, 404);
   }
 
   return await requestRepository.create({
@@ -33,11 +40,17 @@ const findById = async (id) => {
   return request;
 };
 
+const ALLOWED_STATUSES = ['new', 'in_progress', 'completed'];
+
 const updateById = async (id, data) => {
   const { status } = data;
 
   if (!status) {
     throw new AppError('Status is required', 400);
+  }
+
+  if (!ALLOWED_STATUSES.includes(status)) {
+    throw new AppError(`Invalid status. Allowed: ${ALLOWED_STATUSES.join(', ')}`, 400);
   }
 
   const updated = await requestRepository.updateById(id, { status });

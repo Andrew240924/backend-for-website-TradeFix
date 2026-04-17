@@ -2,14 +2,14 @@
 
 const requestService = require('../services/requestService');
 
-const { createRequestDto } = require('../dtos/requestDto');
+const { createRequestDto, requestResponseDto } = require('../dtos/requestDto');
 
 const create = async (req, res, next) => {
   try {
     const dto = createRequestDto(req.body);
 
     const request = await requestService.create(dto);
-    res.status(201).json(request);
+    res.status(201).json(requestResponseDto(request));
   } catch (err) {
     next(err);
   }
@@ -18,7 +18,7 @@ const create = async (req, res, next) => {
 const findAll = async (req, res, next) => {
   try {
     const requests = await requestService.findAll();
-    res.json(requests);
+    res.json(requests.map(requestResponseDto));
   } catch (err) {
     next(err);
   }
@@ -27,7 +27,7 @@ const findAll = async (req, res, next) => {
 const findById = async (req, res, next) => {
   try {
     const request = await requestService.findById(req.params.id);
-    res.json(request);
+    res.json(requestResponseDto(request));
   } catch (err) {
     next(err);
   }
@@ -36,7 +36,7 @@ const findById = async (req, res, next) => {
 const updateById = async (req, res, next) => {
   try {
     const request = await requestService.updateById(req.params.id, req.body);
-    res.json(request);
+    res.json(requestResponseDto(request));
   } catch (err) {
     next(err);
   }

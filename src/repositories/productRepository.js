@@ -18,30 +18,15 @@ const findAll = async (filters) => {
     where.price = {};
 
     if (filters.minPrice) {
-      where.price[Op.gte] = filters.minPrice;
+      where.price[Op.gte] = parseFloat(filters.minPrice);
     }
 
     if (filters.maxPrice) {
-      where.price[Op.lte] = filters.maxPrice;
+      where.price[Op.lte] = parseFloat(filters.maxPrice);
     }
   }
 
-  const page = parseInt(filters.page) || 1;
-  const limit = parseInt(filters.limit) || 10;
-  const offset = (page - 1) * limit;
-
-  const { count, rows } = await Product.findAndCountAll({
-    where,
-    limit,
-    offset,
-  });
-
-  return {
-    total: count,
-    page,
-    pages: Math.ceil(count / limit),
-    data: rows,
-  };
+  return await Product.findAll({ where });
 };
 
 const findById = async (id) => {

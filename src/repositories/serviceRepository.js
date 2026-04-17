@@ -1,13 +1,32 @@
 'use strict';
 
+const { Op } = require('sequelize');
 const { Service } = require('../models');
 
 const create = async (data) => {
   return await Service.create(data);
 };
 
-const findAll = async () => {
-  return await Service.findAll();
+const findAll = async (filters = {}) => {
+  const where = {};
+
+  if (filters.category) {
+    where.category = filters.category;
+  }
+
+  if (filters.minPrice || filters.maxPrice) {
+    where.price = {};
+
+    if (filters.minPrice) {
+      where.price[Op.gte] = parseFloat(filters.minPrice);
+    }
+
+    if (filters.maxPrice) {
+      where.price[Op.lte] = parseFloat(filters.maxPrice);
+    }
+  }
+
+  return await Service.findAll({ where });
 };
 
 const findById = async (id) => {

@@ -9,6 +9,17 @@ const createServiceDto = (data) => {
   };
 };
 
+const serviceResponseDto = (service) => ({
+  id: service.id,
+  name: service.name,
+  description: service.description,
+  category: service.category,
+  price: service.price,
+  createdAt: service.createdAt,
+  updatedAt: service.updatedAt,
+});
+
 module.exports = {
   createServiceDto,
+  serviceResponseDto,
 };

@@ -1,31 +1,17 @@
 'use strict';
 
-const { Request, Service } = require('../models');
+const { Request } = require('../models');
 
 const create = async (data) => {
   return await Request.create(data);
 };
 
 const findAll = async () => {
-  return await Request.findAll({
-    include: [
-      {
-        model: Service,
-        attributes: ['id', 'name', 'price'],
-      },
-    ],
-  });
+  return await Request.findAll();
 };
 
 const findById = async (id) => {
-  return await Request.findByPk(id, {
-    include: [
-      {
-        model: Service,
-        attributes: ['id', 'name', 'price'],
-      },
-    ],
-  });
+  return await Request.findByPk(id);
 };
 
 const updateById = async (id, data) => {

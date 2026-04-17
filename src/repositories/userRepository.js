@@ -1,10 +1,6 @@
-'use strict';
+"use strict";
 
-const { User } = require('../models');
-
-const create = async (data) => {
-  return await User.create(data);
-};
+const { User } = require("../models");
 
 const findByLogin = async (login) => {
   return await User.findOne({
@@ -12,12 +8,6 @@ const findByLogin = async (login) => {
   });
 };
 
-const findById = async (id) => {
-  return await User.findByPk(id);
-};
-
 module.exports = {
-  create,
   findByLogin,
-  findById,
 };

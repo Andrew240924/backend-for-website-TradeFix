@@ -1,19 +1,12 @@
-'use strict';
+"use strict";
 
-const userService = require('../services/userService');
-
-const register = async (req, res, next) => {
-  try {
-    const data = await userService.register(req.body);
-    res.status(201).json(data);
-  } catch (err) {
-    next(err);
-  }
-};
+const userService = require("../services/userService");
+const { loginUserDto } = require("../dtos/userDto");
 
 const login = async (req, res, next) => {
   try {
-    const data = await userService.login(req.body);
+    const dto = loginUserDto(req.body);
+    const data = await userService.login(dto);
     res.json(data);
   } catch (err) {
     next(err);
@@ -21,6 +14,5 @@ const login = async (req, res, next) => {
 };
 
 module.exports = {
-  register,
   login,
 };
