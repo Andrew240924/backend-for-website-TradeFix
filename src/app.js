@@ -42,7 +42,7 @@ const start = async () => {
   await connectDB();
 
   const { sequelize } = require('./models');
-  await sequelize.sync();
+  await sequelize.sync({ alter: true });
 
   app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
