@@ -5,7 +5,7 @@ const createProductDto = (data, file) => {
     name: data.name,
     description: data.description,
     price: data.price,
-    category: data.category,
+    categoryId: data.categoryId,
     image: file ? `/uploads/${file.filename}` : undefined,
   };
 };
@@ -15,11 +15,8 @@ const productResponseDto = (product) => ({
   name: product.name,
   description: product.description,
   price: product.price,
-  category: product.category,
+  category: product.category ? { id: product.category.id, name: product.category.name } : null,
   image: product.image ?? null,
 });
 
-module.exports = {
-  createProductDto,
-  productResponseDto,
-};
+module.exports = { createProductDto, productResponseDto };

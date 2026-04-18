@@ -3,7 +3,7 @@
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  return sequelize.define('Service', {
+  return sequelize.define('Category', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -15,23 +15,12 @@ module.exports = (sequelize) => {
       allowNull: false,
     },
 
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-
-    categoryId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: { model: 'categories', key: 'id' },
-    },
-
-    price: {
-      type: DataTypes.FLOAT,
+    type: {
+      type: DataTypes.ENUM('product', 'service'),
       allowNull: false,
     },
   }, {
-    tableName: 'services',
+    tableName: 'categories',
     timestamps: false,
   });
 };

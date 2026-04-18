@@ -1,56 +1,42 @@
 'use strict';
 
 const { Op } = require('sequelize');
-const { Service } = require('../models');
+const { Service, Category } = require('../models');
+
+const categoryInclude = { model: Category, as: 'category', attributes: ['id', 'name'] };
 
 const create = async (data) => {
-  return await Service.create(data);
+  const service = await Service.create(data);
+  return Service.findByPk(service.id, { include: [categoryInclude] });
 };
 
 const findAll = async (filters = {}) => {
   const where = {};
 
-  if (filters.category) {
-    where.category = filters.category;
+  if (filters.categoryId) {
+    where.categoryId = parseInt(filters.categoryId);
   }
 
   if (filters.minPrice || filters.maxPrice) {
     where.price = {};
-
-    if (filters.minPrice) {
-      where.price[Op.gte] = parseFloat(filters.minPrice);
-    }
-
-    if (filters.maxPrice) {
-      where.price[Op.lte] = parseFloat(filters.maxPrice);
-    }
+    if (filters.minPrice) where.price[Op.gte] = parseFloat(filters.minPrice);
+    if (filters.maxPrice) where.price[Op.lte] = parseFloat(filters.maxPrice);
   }
 
-  return await Service.findAll({ where });
+  return Service.findAll({ where, include: [categoryInclude] });
 };
 
 const findById = async (id) => {
-  return await Service.findByPk(id);
+  return Service.findByPk(id, { include: [categoryInclude] });
 };
 
 const updateById = async (id, data) => {
-  const [updated] = await Service.update(data, {
-    where: { id },
-  });
-
-  return updated;
+  await Service.update(data, { where: { id } });
+  return Service.findByPk(id, { include: [categoryInclude] });
 };
 
 const deleteById = async (id) => {
-  return await Service.destroy({
-    where: { id },
-  });
+  return Service.destroy({ where: { id } });
 };
 
-module.exports = {
-  create,
-  findAll,
-  findById,
-  updateById,
-  deleteById,
-};
+module.exports = { create, findAll, findById, updateById, deleteById };
