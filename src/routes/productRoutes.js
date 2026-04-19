@@ -6,7 +6,7 @@ const productController = require('../controllers/productController');
 const authMiddleware = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
 
-router.post('/', authMiddleware, productController.create);
+router.post('/', authMiddleware, upload.single('image'), productController.create);
 router.get('/', productController.findAll);
 router.get('/:id', productController.findById);
 router.put('/:id/image', authMiddleware, upload.single('image'), productController.uploadImage);
